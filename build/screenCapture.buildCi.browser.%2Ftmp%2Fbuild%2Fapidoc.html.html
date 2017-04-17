@@ -1,0 +1,237 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/rollup/rollup-plugin-babel">rollup-plugin-babel (v2.7.1)</a>
+</h1>
+<h4>Seamless integration between Rollup and Babel.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.rollup-plugin-babel">module rollup-plugin-babel</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.rollup-plugin-babel.rollup-plugin-babel">
+            function <span class="apidocSignatureSpan"></span>rollup-plugin-babel
+            <span class="apidocSignatureSpan">( options )</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.rollup-plugin-babel.toString">
+            function <span class="apidocSignatureSpan">rollup-plugin-babel.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.rollup-plugin-babel.toString">module rollup-plugin-babel.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.rollup-plugin-babel.toString.toString">
+            function <span class="apidocSignatureSpan">rollup-plugin-babel.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.rollup-plugin-babel" id="apidoc.module.rollup-plugin-babel">module rollup-plugin-babel</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.rollup-plugin-babel.rollup-plugin-babel" id="apidoc.element.rollup-plugin-babel.rollup-plugin-babel">
+        function <span class="apidocSignatureSpan"></span>rollup-plugin-babel
+        <span class="apidocSignatureSpan">( options )</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function babel( options ) {
+	options = assign( {}, options || {} );
+	var inlineHelpers = {};
+
+	var filter = rollupPluginutils.createFilter( options.include, options.exclude );
+	delete options.include;
+	delete options.exclude;
+
+	if ( options.sourceMap !== false ) { options.sourceMaps = true; }
+	if ( options.sourceMaps !== false ) { options.sourceMaps = true; }
+	delete options.sourceMap;
+
+	var runtimeHelpers = options.runtimeHelpers;
+	delete options.runtimeHelpers;
+
+	var externalHelpers;
+	if ( options.externalHelpers ) { externalHelpers = true; }
+	delete options.externalHelpers;
+
+	var externalHelpersWhitelist = null;
+	if ( options.externalHelpersWhitelist ) { externalHelpersWhitelist = options.externalHelpersWhitelist; }
+	delete options.externalHelpersWhitelist;
+
+	var warn = function (msg) { return console.warn(msg); }; // eslint-disable-line no-console
+
+	return {
+		name: 'babel',
+
+		options: function options$1 ( options ) {
+			warn = options.onwarn || warn;
+		},
+
+		resolveId: function resolveId ( id ) {
+			if ( id === HELPERS ) { return id; }
+		},
+
+		load: function load ( id ) {
+			if ( id === HELPERS ) {
+				var pattern = new RegExp( ("babelHelpers\\.(" + (keywordHelpers.join('|')) + ")"), 'g' );
+
+				var helpers = babelCore.buildExternalHelpers( externalHelpersWhitelist, 'var' )
+					.replace( pattern, 'var _$1' )
+					.replace( /^babelHelpers\./gm, 'export var ' ) +
+					"\n\nexport { " + (keywordHelpers.map( function (word) { return ("_" + word + " as " + word); }).join( ', ')) + " }";
+
+				return helpers;
+			}
+		},
+
+		transform: function transform$1 ( code, id ) {
+			if ( !filter( id ) ) { return null; }
+			if ( id === HELPERS ) { return null; }
+
+			var helpers = preflightCheck( options, path.dirname( id ) );
+			var localOpts = assign({ filename: id }, options );
+
+			var transformed = babelCore.transform( code, localOpts );
+			var ref = transformed.metadata;
+			var usedHelpers = ref.usedHelpers;
+
+			if ( usedHelpers.length ) {
+				if ( helpers === BUNDLED ) {
+					if ( !externalHelpers ) {
+						transformed.code += "\n\nimport * as babelHelpers from '" + HELPERS + "';";
+					}
+				} else if ( helpers === RUNTIME ) {
+					if ( !runtimeHelpers ) {
+						throw new Error( 'Runtime helpers are not enabled. Either exclude the transform-runtime Babel plugin or pass the `runtimeHelpers
+: true` option. See https://github.com/rollup/rollup-plugin-babel#configuring-babel for more information' );
+					}
+				} else {
+					usedHelpers.forEach( function (helper) {
+						if ( inlineHelpers[ helper ] ) {
+							warnOnce( warn, ("The '" + helper + "' Babel helper is used more than once in your code. It's strongly recommended that you
+ use the\"external-helpers\" plugin or the \"es2015-rollup\" preset. See https://github.com/rollup/rollup-plugin-babel#configuring-babel for more information") );
+						}
+
+						inlineHelpers[ helper ] = true;
+					});
+				}
+			}
+
+			return {
+				code: transformed.code,
+				map: transformed.map
+			};
+		}
+	};
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.rollup-plugin-babel.toString" id="apidoc.element.rollup-plugin-babel.toString">
+        function <span class="apidocSignatureSpan">rollup-plugin-babel.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.rollup-plugin-babel.toString" id="apidoc.module.rollup-plugin-babel.toString">module rollup-plugin-babel.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.rollup-plugin-babel.toString.toString" id="apidoc.element.rollup-plugin-babel.toString.toString">
+        function <span class="apidocSignatureSpan">rollup-plugin-babel.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
