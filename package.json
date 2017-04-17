@@ -1,1 +1,39 @@
-{     "devDependencies": {         "rollup-plugin-babel": "*",         "electron-lite": "kaizhu256/node-electron-lite#alpha",         "utility2": "kaizhu256/node-utility2#alpha"     },     "name":"npmdoc-rollup-plugin-babel",     "homepage": "https://github.com/npmdoc/node-npmdoc-rollup-plugin-babel",     "repository": {         "type": "git",         "url": "https://github.com/npmdoc/node-npmdoc-rollup-plugin-babel.git"     },     "scripts": {         "build-ci": "utility2 shReadmeTest build_ci.sh"     },     "version": "0.0.1" }
+{
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "description": "api documentation for [rollup-plugin-babel (v2.7.1)](https://github.com/rollup/rollup-plugin-babel) [![npm package](https://img.shields.io/npm/v/npmdoc-rollup-plugin-babel.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-rollup-plugin-babel) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-rollup-plugin-babel.svg)](https://travis-ci.org/npmdoc/node-npmdoc-rollup-plugin-babel)",
+    "devDependencies": {
+        "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "rollup-plugin-babel": "*",
+        "utility2": "kaizhu256/node-utility2#alpha"
+    },
+    "engines": {
+        "node": ">=4.0"
+    },
+    "homepage": "https://github.com/npmdoc/node-npmdoc-rollup-plugin-babel",
+    "keywords": [
+        "documentation",
+        "rollup-plugin-babel"
+    ],
+    "license": "MIT",
+    "main": "lib.npmdoc_rollup_plugin_babel.js",
+    "name": "npmdoc-rollup-plugin-babel",
+    "nameAlias": "npmdoc_rollup_plugin_babel",
+    "nameOriginal": "npmdoc-rollup-plugin-babel",
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/npmdoc/node-npmdoc-rollup-plugin-babel.git"
+    },
+    "scripts": {
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
+        "env": "env",
+        "heroku-postbuild": "npm install \"kaizhu256/node-utility2#alpha\" && utility2 shDeployHeroku",
+        "postinstall": "[ ! -f npm_scripts.sh ] || ./npm_scripts.sh postinstall",
+        "start": "PORT=${PORT:-8080} utility2 start test.js",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
+    },
+    "version": "0.0.1"
+}
