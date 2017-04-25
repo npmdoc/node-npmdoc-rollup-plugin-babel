@@ -1,4 +1,7 @@
-# api documentation for  [rollup-plugin-babel (v2.7.1)](https://github.com/rollup/rollup-plugin-babel)  [![npm package](https://img.shields.io/npm/v/npmdoc-rollup-plugin-babel.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-rollup-plugin-babel) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-rollup-plugin-babel.svg)](https://travis-ci.org/npmdoc/node-npmdoc-rollup-plugin-babel)
+# npmdoc-rollup-plugin-babel
+
+#### basic api documentation for  [rollup-plugin-babel (v2.7.1)](https://github.com/rollup/rollup-plugin-babel)  [![npm package](https://img.shields.io/npm/v/npmdoc-rollup-plugin-babel.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-rollup-plugin-babel) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-rollup-plugin-babel.svg)](https://travis-ci.org/npmdoc/node-npmdoc-rollup-plugin-babel)
+
 #### Seamless integration between Rollup and Babel.
 
 [![NPM](https://nodei.co/npm/rollup-plugin-babel.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/rollup-plugin-babel)
@@ -99,7 +102,8 @@
         "pretest": "npm run build",
         "test": "mocha"
     },
-    "version": "2.7.1"
+    "version": "2.7.1",
+    "bin": {}
 }
 ```
 
